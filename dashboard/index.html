@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Telecom Churn Dashboard</title>
+<style>
+:root{--bg:#f5f6f8;--card:#fff;--tx:#1b1f27;--mu:#6b7280;--bd:#e3e6eb;--bl:#4c72b0;--rd:#d9534f;--tr:#e9ecf1;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#14171c;--card:#1d2128;--tx:#e8eaee;--mu:#9aa3b2;--bd:#2b313b;--bl:#6d95cf;--rd:#e5726e;--tr:#2a303a}}
+:root[data-theme="dark"]{--bg:#14171c;--card:#1d2128;--tx:#e8eaee;--mu:#9aa3b2;--bd:#2b313b;--bl:#6d95cf;--rd:#e5726e;--tr:#2a303a}
+html,body{height:100%;margin:0}
+body{background:var(--bg);color:var(--tx);font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;font-size:14px}
+.w{height:100%;box-sizing:border-box;display:flex;flex-direction:column;gap:10px;padding:12px 16px;min-height:660px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:10px 24px;flex-wrap:wrap}
+h1{font-size:22px;margin:0}.sub{color:var(--mu);font-size:13px}
+.ctl{display:flex;gap:18px;flex-wrap:wrap;align-items:center}.grp{display:flex;gap:6px;align-items:center}.grp b{margin-right:2px;color:var(--mu);font-weight:600}
+button{border:1px solid var(--bd);background:var(--card);color:var(--tx);padding:6px 14px;border-radius:99px;cursor:pointer;font:inherit}
+.seg button{border-radius:8px;font-weight:600;padding:6px 18px}
+button.on{background:var(--bl);border-color:var(--bl);color:#fff}
+.c{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:10px 14px;min-height:0}
+.k{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.k .c{padding:8px 14px}.k .v{font-size:26px;font-weight:700;line-height:1.15}.k .l{color:var(--mu);font-size:12px}
+.g{flex:1;min-height:0;display:grid;grid-template-columns:repeat(12,1fr);grid-template-rows:1fr 1fr;gap:10px}
+.g .c{display:flex;flex-direction:column;grid-column:span 4}
+h2{font-size:14px;margin:0}.q{color:var(--mu);font-size:12px;margin:0 0 6px}
+.ch{flex:1;min-height:0;position:relative;overflow:hidden;display:flex}
+.col{flex:1;min-width:0;display:flex;flex-direction:column}
+.bw{flex:1;position:relative;min-height:0}
+.bar{position:absolute;left:50%;transform:translateX(-50%);width:min(64%,64px);bottom:0;border-radius:5px 5px 0 0}
+.val{position:absolute;left:0;right:0;text-align:center;font-weight:700;font-size:13px}
+.bl{position:absolute;left:0;right:0;border-top:1.5px dashed var(--mu);opacity:.7;pointer-events:none}
+.lb{text-align:center;font-size:12px;padding-top:4px;white-space:nowrap}.lb small{display:block;color:var(--mu);font-size:11px}
+.hb{flex:1;display:flex;flex-direction:column;justify-content:space-evenly}
+.hr{display:grid;grid-template-columns:70px 1fr 92px;gap:8px;align-items:center}
+.hr span{font-size:13px}.t{height:18px;background:var(--tr);border-radius:9px;position:relative}.t i{display:block;height:100%;border-radius:9px}
+.t u{position:absolute;top:-3px;bottom:-3px;border-left:1.5px dashed var(--mu);opacity:.8}
+.n{text-align:right;color:var(--mu);font-size:12px;white-space:nowrap}.n b{color:var(--tx);font-size:13px}
+.dn{display:flex;align-items:center;gap:14px;width:100%}.dn svg{flex:none}
+.lg2{flex:1;display:flex;flex-direction:column;gap:10px;min-width:0}.lg2 div{display:grid;grid-template-columns:12px 1fr;column-gap:8px;align-items:center;font-size:13px}
+.lg2 i{width:12px;height:12px;border-radius:3px}.lg2 small{grid-column:2;color:var(--mu);font-size:12px}
+.hl{flex:1;display:flex;flex-direction:column;justify-content:space-evenly;width:100%}
+.hl div{display:flex;justify-content:space-between;gap:8px;font-size:13px;border-bottom:1px solid var(--bd);padding-bottom:5px}.hl div:last-child{border:0}
+.hl span{color:var(--mu)}.hl b{color:var(--rd)}
+.a{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.a div{font-size:12.5px;line-height:1.35;color:var(--mu)}.a b{color:var(--tx)}.a em{font-style:normal;color:var(--bl);font-weight:700;margin-right:4px}
+footer{color:var(--mu);font-size:11px;line-height:1.35}footer i{display:inline-block;width:10px;height:10px;border-radius:3px;margin:0 4px 0 8px;vertical-align:-1px}
+@media (max-width:1000px){html,body{height:auto}.w{height:auto}.g{grid-template-columns:repeat(2,1fr);grid-template-rows:none}.g .c{grid-column:span 1;min-height:260px}.k,.a{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:620px){.g{grid-template-columns:1fr}}
+</style></head><body><div class="w">
+<div class="top"><div><h1>Telecom Customer Churn Dashboard</h1><div class="sub">Indian telecom customers (synthetic data, 10,000 customers)</div></div>
+<div class="ctl"><div class="grp seg"><b>View:</b><span id="v"></span></div><div class="grp"><b>Operator:</b><span id="f"></span></div></div></div>
+<div class="k" id="k"></div>
+<div class="g" id="g"></div>
+<div class="c a"><div><em>1</em><b>Fix complaints and network quality</b> for Vi and BSNL, especially in rural areas; set a resolution deadline.</div>
+<div><em>2</em><b>Onboard new customers</b> with check-ins at days 30, 60 and 90.</div>
+<div><em>3</em><b>Early-warning alerts</b> for prepaid: recharge gap over 20 days or 2 or fewer recharges in 6 months.</div>
+<div><em>4</em><b>Weekly watch list</b> of customers with 3+ warning signs; test the save rate on a small group.</div></div>
+<footer>Colour: <i style="background:var(--rd)"></i>above <i style="background:var(--bl)"></i>at or below the churn rate of the selected operator (dashed line). Donut slices show each group's share of churned customers. Warning signs = unresolved complaint, 2+ complaints, recharge gap over 20 days, 2 or fewer recharges in 6 months, tenure 12 months or less. Rates show association, not proof of cause.</footer>
+</div>
+<script>
+const D={"All":{"kpi":[10000,1630,7869720],"Tenure":[["0-6 mo",648,169],["6-12 mo",1209,243],["1-2 yr",2892,540],["2-5 yr",4389,587],["5+ yr",862,91]],"Complaints":[["0",4924,513],["1",3339,590],["2",1258,332],["3",360,133],["4+",119,62]],"Resolution":[["No complaint",4924,513],["Resolved",3268,649],["Unresolved",1808,468]],"Gap":[["0-10 days",5144,674],["11-20",3663,622],["21-30",948,231],["30+ days",245,103]],"Freq":[["0-2",1316,427],["3-4",3185,627],["5-6",3207,413],["7+",2292,163]],"Area":[["Urban",4528,701],["Semi-urban",2965,421],["Rural",2507,508]],"5G":[["Non-5G",6684,1218],["5G",3316,412]],"Plan":[["Prepaid",8194,1384],["Postpaid",1806,246]],"Signs":[["0",4580,387],["1",3498,600],["2",1436,415],["3",410,180],["4+",76,48]]},"Jio":{"kpi":[4034,502,2493336],"Tenure":[["0-6 mo",267,58],["6-12 mo",472,83],["1-2 yr",1153,156],["2-5 yr",1793,175],["5+ yr",349,30]],"Complaints":[["0",2296,198],["1",1263,183],["2",384,90],["3",76,21],["4+",15,10]],"Resolution":[["No complaint",2296,198],["Resolved",1141,185],["Unresolved",597,119]],"Gap":[["0-10 days",2177,227],["11-20",1408,179],["21-30",364,66],["30+ days",85,30]],"Freq":[["0-2",530,133],["3-4",1337,206],["5-6",1261,121],["7+",906,42]],"Area":[["Urban",1805,220],["Semi-urban",1224,133],["Rural",1005,149]],"5G":[["Non-5G",2526,341],["5G",1508,161]],"Plan":[["Prepaid",3296,427],["Postpaid",738,75]],"Signs":[["0",2017,133],["1",1395,193],["2",489,121],["3",117,46],["4+",16,9]]},"Airtel":{"kpi":[3329,499,2358492],"Tenure":[["0-6 mo",213,55],["6-12 mo",407,66],["1-2 yr",986,171],["2-5 yr",1463,188],["5+ yr",260,19]],"Complaints":[["0",1754,193],["1",1101,180],["2",368,87],["3",90,30],["4+",16,9]],"Resolution":[["No complaint",1754,193],["Resolved",1000,170],["Unresolved",575,136]],"Gap":[["0-10 days",1789,228],["11-20",1185,182],["21-30",273,61],["30+ days",82,28]],"Freq":[["0-2",427,135],["3-4",1016,197],["5-6",1090,115],["7+",796,52]],"Area":[["Urban",1548,233],["Semi-urban",948,114],["Rural",833,152]],"5G":[["Non-5G",2127,352],["5G",1202,147]],"Plan":[["Prepaid",2748,424],["Postpaid",581,75]],"Signs":[["0",1609,143],["1",1153,185],["2",430,108],["3",112,48],["4+",25,15]]},"Vi":{"kpi":[1652,400,1866240],"Tenure":[["0-6 mo",105,32],["6-12 mo",203,70],["1-2 yr",459,128],["2-5 yr",721,143],["5+ yr",164,27]],"Complaints":[["0",586,88],["1",603,144],["2",302,94],["3",110,47],["4+",51,27]],"Resolution":[["No complaint",586,88],["Resolved",692,184],["Unresolved",374,128]],"Gap":[["0-10 days",785,153],["11-20",636,161],["21-30",188,65],["30+ days",43,21]],"Freq":[["0-2",229,105],["3-4",531,146],["5-6",520,103],["7+",372,46]],"Area":[["Urban",729,149],["Semi-urban",503,116],["Rural",420,135]],"5G":[["Non-5G",1046,296],["5G",606,104]],"Plan":[["Prepaid",1358,344],["Postpaid",294,56]],"Signs":[["0",633,80],["1",586,138],["2",300,109],["3",114,60],["4+",19,13]]},"BSNL":{"kpi":[985,229,1151652],"Tenure":[["0-6 mo",63,24],["6-12 mo",127,24],["1-2 yr",294,85],["2-5 yr",412,81],["5+ yr",89,15]],"Complaints":[["0",288,34],["1",372,83],["2",204,61],["3",84,35],["4+",37,16]],"Resolution":[["No complaint",288,34],["Resolved",435,110],["Unresolved",262,85]],"Gap":[["0-10 days",393,66],["11-20",434,100],["21-30",123,39],["30+ days",35,24]],"Freq":[["0-2",130,54],["3-4",301,78],["5-6",336,74],["7+",218,23]],"Area":[["Urban",446,99],["Semi-urban",290,58],["Rural",249,72]],"5G":[["Non-5G",985,229]],"Plan":[["Prepaid",792,189],["Postpaid",193,40]],"Signs":[["0",321,31],["1",364,84],["2",217,77],["3",67,26],["4+",16,11]]},"Operator":[["Vi",1652,400],["BSNL",985,229],["Airtel",3329,499],["Jio",4034,502]]};
+const T={Operator:["hbar","Churn by operator","Which operators lose the most customers?","Operator"],Tenure:["line","Churn by tenure","Do new customers leave more?","Tenure"],Plan:["donut","Churn by plan type","Prepaid vs postpaid","Plan"],Area:["col","Churn by area type","Where is churn highest?","Area"],"5G":["col","Churn by 5G usage","Technology link (association only)","5G"],
+Complaints:["col","Churn by network complaints","Does each extra complaint raise churn?","Complaints"],Resolution:["donut","Churn by complaint resolution","Does fixing the complaint help?","Resolution"],Gap:["line","Churn by days since last recharge","Early-warning signal 1","Recharge gap"],Freq:["hbar","Churn by recharges in last 6 months","Early-warning signal 2","Recharges"],Signs:["col","Churn by number of warning signs","Combined risk score","Warning signs"]};
+const V={Profile:["Operator","Tenure","Plan","Area","5G"],Behaviour:["Complaints","Resolution","Gap","Freq","Signs"]};
+let op="All",view="Profile";const fmt=n=>n.toLocaleString("en-IN"),pc=p=>(p*100).toFixed(1)+"%",clr=(p,b)=>p>b?"--rd":"--bl";
+const mxOf=(rows,b,m)=>Math.max(...rows.map(r=>r[2]/r[1]),b)*m;
+function col(rows,b){const mx=mxOf(rows,b,1.18);return rows.map(([l,a,c])=>{const p=c/a,h=p/mx*100;
+ return `<div class="col"><div class="bw"><div class="bar" style="height:${h}%;background:var(${clr(p,b)})"></div><div class="val" style="bottom:calc(${h}% + 3px)">${pc(p)}</div><div class="bl" style="bottom:${b/mx*100}%"></div></div><div class="lb">${l}<small>${fmt(a)}</small></div></div>`}).join("")}
+function hbar(rows,b){const mx=mxOf(rows,b,1.1);return `<div class="hb">`+rows.map(([l,a,c])=>{const p=c/a;
+ return `<div class="hr"><span>${l}</span><div class="t"><i style="width:${p/mx*100}%;background:var(${clr(p,b)})"></i><u style="left:${b/mx*100}%"></u></div><div class="n"><b>${pc(p)}</b> (${fmt(a)})</div></div>`}).join("")+`</div>`}
+function line(W,H,rows,b){const pl=24,pr=24,pt=26,pb=40,mx=mxOf(rows,b,1.2),x=i=>pl+(W-pl-pr)*(i+.5)/rows.length,y=p=>pt+(H-pt-pb)*(1-p/mx);
+ const P=rows.map(([l,a,c],i)=>[x(i),y(c/a),c/a]),d=P.map((q,i)=>(i?"L":"M")+q[0]+" "+q[1]).join(" "),by=y(b);
+ return `<svg width="${W}" height="${H}" style="font-family:inherit"><path d="${d} L${P[P.length-1][0]} ${H-pb} L${P[0][0]} ${H-pb}Z" style="fill:var(--bl);opacity:.1"/><line x1="${pl}" x2="${W-pr}" y1="${by}" y2="${by}" style="stroke:var(--mu);stroke-dasharray:5 4;opacity:.7"/><path d="${d}" style="fill:none;stroke:var(--bl);stroke-width:2.5"/>`+
+ P.map((q,i)=>`<circle cx="${q[0]}" cy="${q[1]}" r="6" style="fill:var(${clr(q[2],b)});stroke:var(--card);stroke-width:2"/><text x="${q[0]}" y="${q[1]-12}" text-anchor="middle" style="fill:var(--tx);font-size:13px;font-weight:700">${pc(q[2])}</text><text x="${q[0]}" y="${H-22}" text-anchor="middle" style="fill:var(--tx);font-size:12px">${rows[i][0]}</text><text x="${q[0]}" y="${H-8}" text-anchor="middle" style="fill:var(--mu);font-size:11px">${fmt(rows[i][1])}</text>`).join("")+`</svg>`}
+function donut(W,H,rows,b){const S=Math.min(H,W*.5),R=S/2-4,r0=R*.64,mid=(R+r0)/2,C=2*Math.PI*mid,tot=rows.reduce((s,r)=>s+r[2],0);let cum=0;
+ const arcs=rows.map(([l,a,c],i)=>{const f=c/tot,s=`<circle cx="${S/2}" cy="${S/2}" r="${mid}" fill="none" style="stroke:var(${clr(c/a,b)});opacity:${[1,.72,.5][i]||.5}" stroke-width="${R-r0}" stroke-dasharray="${Math.max(f*C-3,1)} ${C}" stroke-dashoffset="${-cum*C}" transform="rotate(-90 ${S/2} ${S/2})"/>`;cum+=f;return s}).join("");
+ const lg=rows.map(([l,a,c],i)=>`<div><i style="background:var(${clr(c/a,b)});opacity:${[1,.72,.5][i]||.5}"></i><span><b>${l}</b>: ${pc(c/a)} churn</span><small>${fmt(c)} churned of ${fmt(a)} (${pc(c/tot)} of all churners)</small></div>`).join("");
+ return `<div class="dn"><svg width="${S}" height="${S}" style="font-family:inherit">${arcs}<text x="${S/2}" y="${S/2}" text-anchor="middle" style="fill:var(--tx);font-size:${Math.max(16,S/8)}px;font-weight:700">${fmt(tot)}</text><text x="${S/2}" y="${S/2+16}" text-anchor="middle" style="fill:var(--mu);font-size:12px">churned</text></svg><div class="lg2">${lg}</div></div>`}
+const get=(s,k)=>k==="Operator"?D.Operator:s[k];
+function draw(){
+ const s=D[op],[n,ch,rev]=s.kpi,base=ch/n,ref=D.All.kpi[1]/D.All.kpi[0],diff=(base-ref)*100,ks=V[view];
+ document.getElementById("k").innerHTML=[["Customers",fmt(n),op==="All"?"all operators":op],["Churned customers",fmt(ch),"&nbsp;"],["Churn rate",pc(base),op==="All"?"overall":(diff>=0?"+":"")+diff.toFixed(1)+" pts vs overall"],["Annual revenue lost",(rev/1e5).toFixed(1)+" lakh","INR, monthly recharge x 12"]]
+ .map(x=>`<div class="c"><div class="l">${x[0]}</div><div class="v">${x[1]}</div><div class="l">${x[2]}</div></div>`).join("");
+ const hl=ks.map(k=>{const r=get(s,k).reduce((m,q)=>q[2]/q[1]>m[2]/m[1]?q:m);return `<div><span>${T[k][3]}</span><span><b>${r[0]}</b> &nbsp;<b>${pc(r[2]/r[1])}</b></span></div>`}).join("");
+ const g=document.getElementById("g");
+ g.innerHTML=ks.map(k=>`<div class="c"><h2>${T[k][1]}</h2><p class="q">${T[k][2]}</p><div class="ch" data-k="${k}"></div></div>`).join("")+`<div class="c"><h2>Highest churn spots</h2><p class="q">Worst group in each chart</p><div class="ch"><div class="hl">${hl}</div></div></div>`;
+ g.querySelectorAll(".ch[data-k]").forEach(el=>{const k=el.dataset.k,t=T[k][0],rows=get(s,k),W=el.clientWidth,H=el.clientHeight;
+  el.innerHTML=t==="col"?col(rows,base):t==="hbar"?hbar(rows,base):t==="line"?line(W,H,rows,base):donut(W,H,rows,base)});
+ document.querySelectorAll("#f button").forEach(b=>b.className=b.dataset.o===op?"on":"");
+ document.querySelectorAll("#v button").forEach(b=>b.className=b.dataset.v===view?"on":"");
+}
+document.getElementById("f").innerHTML=["All","Jio","Airtel","Vi","BSNL"].map(o=>`<button data-o="${o}">${o}</button>`).join(" ");
+document.getElementById("v").innerHTML=["Profile","Behaviour"].map(o=>`<button data-v="${o}">${o}</button>`).join(" ");
+document.getElementById("f").onclick=e=>{if(e.target.dataset.o){op=e.target.dataset.o;draw()}};
+document.getElementById("v").onclick=e=>{if(e.target.dataset.v){view=e.target.dataset.v;draw()}};
+let rz;addEventListener("resize",()=>{clearTimeout(rz);rz=setTimeout(draw,120)});
+draw();
+</script></body></html>
