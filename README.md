@@ -28,7 +28,10 @@ This project is an end-to-end exploratory data analysis (EDA) in Python that fin
 |:---:|:---:|:---:|:---:|:---:|
 | **10,000** | **1,630** | **16.3%** | **Vi (24.2%)** | **Vi prepaid, rural (34.4%)** |
 
-## 🖥️ Interactive dashboard
+## 🖥️ Interactive Dashboard
+
+[View Live Interactive Dashboard](https://harshkanaujiya0207.github.io/Telecom-Churn-Analysis/dashboard/)
+
 
 A one-page dashboard built from the same analysis. It has two views, **Profile** (who the customers are) and **Behaviour** (what they do), and can be filtered by operator. It contains only aggregated figures. The dashboard groups "4 or more" complaints (and warning signs) into one bar, so those two bars differ slightly from the exact numbers in the notebook.
 
